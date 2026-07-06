@@ -1,0 +1,37 @@
+from flask import Flask
+from flask_cors import CORS
+from routes.mood import mood_bp
+from routes.user import user_bp
+from routes.chat import chat_bp
+from routes.cycle import cycle_bp   # ✅ ADD THIS
+
+from config import Config
+from db import db
+
+from models.user import User
+from models.cycle import Cycle      # OK to keep
+
+app = Flask(__name__)
+app.config.from_object(Config)
+
+db.init_app(app)
+
+CORS(app)
+
+# register routes
+app.register_blueprint(chat_bp, url_prefix="/api")
+app.register_blueprint(user_bp, url_prefix="/api")
+app.register_blueprint(cycle_bp, url_prefix="/api")   # ✅ ADD THIS
+app.register_blueprint(mood_bp, url_prefix="/api")
+@app.route("/")
+def home():
+    return {
+        "status": "success",
+        "message": "🌸 HerSphere Backend Running!"
+    }
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+
+    app.run(debug=True)
