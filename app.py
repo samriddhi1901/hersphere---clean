@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from routes.mood import mood_bp
 from routes.user import user_bp
-from routes.chat import chat_bp
+#from routes.chat import chat_bp
 from routes.cycle import cycle_bp   # ✅ ADD THIS
 
 from config import Config
@@ -19,7 +19,7 @@ db.init_app(app)
 CORS(app)
 
 # register routes
-app.register_blueprint(chat_bp, url_prefix="/api")
+#app.register_blueprint(chat_bp, url_prefix="/api")
 app.register_blueprint(user_bp, url_prefix="/api")
 app.register_blueprint(cycle_bp, url_prefix="/api")   # ✅ ADD THIS
 app.register_blueprint(mood_bp, url_prefix="/api")
