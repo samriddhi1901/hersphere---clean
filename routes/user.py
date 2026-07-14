@@ -4,30 +4,43 @@ from models.user import User
 
 user_bp = Blueprint("user", __name__)
 
-@user_bp.route("/user", methods=["POST"])
-def create_user():
+
+@user_bp.route("/user/sync", methods=["POST"])
+def sync_user():
+
     data = request.get_json()
 
-    clerk_id = data.get("clerk_user_id")
+    clerk_user_id = data.get("clerk_user_id")
     email = data.get("email")
     name = data.get("name")
 
-    if not clerk_id:
-        return jsonify({"error": "Missing Clerk ID"}), 400
 
-    # check if user exists
-    existing_user = User.query.filter_by(clerk_user_id=clerk_id).first()
+    if not clerk_user_id:
+        return jsonify({
+            "error": "Missing clerk user id"
+        }),400
 
-    if existing_user:
-        return jsonify({"message": "User already exists"}), 200
 
-    new_user = User(
-        clerk_user_id=clerk_id,
-        email=email,
-        name=name
-    )
+    user = User.query.filter_by(
+        clerk_user_id=clerk_user_id
+    ).first()
 
-    db.session.add(new_user)
-    db.session.commit()
 
-    return jsonify({"message": "User created successfully"}), 201
+    if not user:
+
+        user = User(
+            clerk_user_id=clerk_user_id,
+            email=email,
+            name=name
+        )
+
+        db.session.add(user)
+        db.session.commit()
+
+
+    return jsonify({
+
+        "user_id": user.id,
+        "clerk_user_id": user.clerk_user_id
+
+    })
