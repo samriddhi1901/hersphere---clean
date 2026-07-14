@@ -5,7 +5,7 @@ from models.user import User
 user_bp = Blueprint("user", __name__)
 
 
-@user_bp.route("/user/sync", methods=["POST"])
+@user_bp.route("/user/sync", methods=["POST", "OPTIONS"])
 def sync_user():
 
     data = request.get_json()
