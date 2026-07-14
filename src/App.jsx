@@ -7,7 +7,7 @@ import Nutrition from "./pages/Nutrition";
 import CycleTracker from "./pages/CycleTracker";
 import MoodTracker from "./pages/MoodTracker";
 import Reports from "./pages/Reports";
-
+import Profile from "./pages/Profile";
 
 export default function App() {
 
@@ -55,7 +55,7 @@ export default function App() {
           path="/nutrition" 
           element={<Nutrition />} 
         />
-
+        <Route path="/profile" element={<Profile />} />
 
       </Routes>
 
