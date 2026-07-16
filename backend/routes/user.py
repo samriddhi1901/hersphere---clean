@@ -5,7 +5,7 @@ from models.user import User
 user_bp = Blueprint("user", __name__)
 
 
-@user_bp.route("/user/sync", methods=["POST", "OPTIONS"])
+@user_bp.route("/user/sync", methods=["POST"])
 def sync_user():
 
     data = request.get_json()
@@ -14,20 +14,11 @@ def sync_user():
     email = data.get("email")
     name = data.get("name")
 
-
-    if not clerk_user_id:
-        return jsonify({
-            "error": "Missing clerk user id"
-        }),400
-
-
     user = User.query.filter_by(
         clerk_user_id=clerk_user_id
     ).first()
 
-
     if not user:
-
         user = User(
             clerk_user_id=clerk_user_id,
             email=email,
@@ -37,10 +28,7 @@ def sync_user():
         db.session.add(user)
         db.session.commit()
 
-
     return jsonify({
-
-        "user_id": user.id,
-        "clerk_user_id": user.clerk_user_id
-
+        "message": "User synced",
+        "user_id": user.id
     })

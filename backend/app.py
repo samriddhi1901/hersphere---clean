@@ -28,7 +28,8 @@ CORS(
         r"/api/*": {
             "origins": [
                 "http://localhost:5173",
-                "http://localhost:5174"
+                "http://localhost:5174",
+                "https://hersphere-clean-gu6g.vercel.app"
             ]
         }
     },
