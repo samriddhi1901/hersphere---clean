@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-#from services.gemini_service import get_ai_response
+from services.gemini_service import get_ai_response
 
 chat_bp = Blueprint("chat", __name__)
 
