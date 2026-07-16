@@ -21,21 +21,23 @@ app.config.from_object(Config)
 
 db.init_app(app)
 
+from flask_cors import CORS
 
 CORS(
     app,
     resources={
         r"/api/*": {
             "origins": [
+                "https://hersphere-lac.vercel.app",
                 "http://localhost:5173",
-                "http://localhost:5174",
-                "https://hersphere-clean-gu6g.vercel.app"
+                "http://localhost:5174"
             ]
         }
     },
-    supports_credentials=True
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 )
-
 
 
 # Register routes
