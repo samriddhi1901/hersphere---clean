@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import ProfileSetup from "./pages/ProfileSetup";
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -56,7 +56,10 @@ export default function App() {
           element={<Nutrition />} 
         />
         <Route path="/profile" element={<Profile />} />
-
+        <Route 
+          path="/profile-setup"
+          element={<ProfileSetup />}
+        /> 
       </Routes>
 
     </BrowserRouter>
