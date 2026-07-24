@@ -1,4 +1,4 @@
-const BASE_URL = "https://herspherebackend.onrender.com/api";
+const BASE_URL = "https://hersphere-backend.onrender.com/api";
 
 export async function sendMessage(message) {
   try {

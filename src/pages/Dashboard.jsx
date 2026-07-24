@@ -18,7 +18,7 @@ import RecentActivity from "../components/dashboard/RecentActivity";
 export default function Dashboard() {
 
 
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   const navigate = useNavigate();
 
@@ -142,14 +142,23 @@ export default function Dashboard() {
 
 
 
+    if(!isLoaded){
+      return; // Clerk hasn't determined auth state yet, keep waiting
+    }
+
     if(user){
 
       syncUser();
 
+    } else {
+
+      setLoading(false);
+      navigate("/");
+
     }
 
 
-  },[user]);
+  },[isLoaded, user]);
 
 
 

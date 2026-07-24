@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Bot,
   Send,
@@ -8,7 +9,40 @@ import {
   Brain,
 } from "lucide-react";
 
+const conversation = [
+  { from: "user", text: "Hi! I've been feeling tired lately. Could it be iron deficiency?" },
+  { from: "ai", text: "Fatigue can sometimes relate to low iron, but many things can cause it. Eating iron-rich foods and checking with a doctor for persistent symptoms is a good idea." },
+  { from: "user", text: "What foods are rich in iron?" },
+  { from: "ai", text: "Spinach, lentils, beans, dates, jaggery, pumpkin seeds, and lean meats are great sources of iron." },
+];
+
+function useTypingDemo() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const STEP_MS = 1600;
+    const PAUSE_MS = 3000;
+    let timeoutId;
+
+    const step = (i) => {
+      setCount(i);
+      if (i >= conversation.length) {
+        timeoutId = setTimeout(() => step(0), PAUSE_MS);
+      } else {
+        timeoutId = setTimeout(() => step(i + 1), STEP_MS);
+      }
+    };
+
+    timeoutId = setTimeout(() => step(1), STEP_MS);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return conversation.slice(0, count);
+}
+
 export default function AISection() {
+  const visibleMessages = useTypingDemo();
+
   return (
     <section
       id="ai"
@@ -128,37 +162,38 @@ export default function AISection() {
 
               {/* Messages */}
 
-              <div className="p-6 space-y-5">
+              <div className="p-6 space-y-5 min-h-[280px]">
 
-                <div className="bg-pink-100 p-4 rounded-2xl max-w-xs">
+                <AnimatePresence>
+                  {visibleMessages.map((msg, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className={
+                        msg.from === "user"
+                          ? "bg-pink-100 p-4 rounded-2xl max-w-xs"
+                          : "bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-2xl ml-auto max-w-sm"
+                      }
+                    >
+                      {msg.text}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
 
-                  Hi! I've been feeling tired lately.
-                  Could it be due to iron deficiency?
-
-                </div>
-
-                <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-2xl ml-auto max-w-sm">
-
-                  Fatigue can sometimes be associated with low iron,
-                  but many conditions can cause similar symptoms.
-                  Eating iron-rich foods and consulting a healthcare
-                  professional for persistent symptoms is important.
-
-                </div>
-
-                <div className="bg-pink-100 p-4 rounded-2xl max-w-xs">
-
-                  What foods are rich in iron?
-
-                </div>
-
-                <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-2xl ml-auto max-w-sm">
-
-                  Spinach, lentils, beans, dates, jaggery,
-                  pumpkin seeds, and lean meats are great
-                  sources of iron.
-
-                </div>
+                {visibleMessages.length > 0 &&
+                  visibleMessages.length < conversation.length && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex gap-1 bg-pink-100 w-fit px-4 py-3 rounded-2xl"
+                    >
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" />
+                    </motion.div>
+                  )}
 
               </div>
 
