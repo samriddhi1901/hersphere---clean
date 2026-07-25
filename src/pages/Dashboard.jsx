@@ -25,7 +25,11 @@ export default function Dashboard() {
 
   const [loading, setLoading] = useState(true);
 
-  const [hasProfile, setHasProfile] = useState(false);
+  const [profile, setProfile] = useState(null);
+
+  const [summary, setSummary] = useState(null);
+
+  const hasProfile = !!profile;
 
 
 
@@ -42,7 +46,15 @@ export default function Dashboard() {
 
       if(response.data.exists){
 
-        setHasProfile(true);
+        setProfile(response.data.profile);
+
+        // fetch real dashboard numbers once we know the profile exists
+        try {
+          const summaryRes = await API.get(`/dashboard/summary/${user_id}`);
+          setSummary(summaryRes.data);
+        } catch (summaryError) {
+          console.error("Failed to load dashboard summary:", summaryError);
+        }
 
       }
       else{
@@ -201,13 +213,17 @@ export default function Dashboard() {
     <AuthenticatedLayout>
 
 
-      <WelcomeBanner />
+      <WelcomeBanner
+        name={user?.firstName || user?.username || "there"}
+        lifeStage={profile?.life_stage || "period"}
+        goal={profile?.wellness_goal}
+      />
 
 
-      <StatsCards />
+      <StatsCards lifeStage={profile?.life_stage || "period"} summary={summary} />
 
 
-      <AIRecommendation />
+      <AIRecommendation lifeStage={profile?.life_stage || "period"} />
 
 
 
