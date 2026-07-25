@@ -29,10 +29,18 @@ class HealthProfile(db.Model):
     )
 
 
-    # Average menstrual cycle length
+    # Life stage: "period", "pregnancy", or "menopause"
+    life_stage = db.Column(
+        db.String(20),
+        nullable=False,
+        default="period"
+    )
+
+
+    # Average menstrual cycle length (only relevant for "period" stage)
     cycle_length = db.Column(
         db.Integer,
-        default=28
+        nullable=True
     )
 
 

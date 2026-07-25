@@ -17,7 +17,8 @@ def setup_profile():
 
     user_id = data.get("user_id")
     wellness_goal = data.get("wellness_goal")
-    cycle_length = data.get("cycle_length", 28)
+    life_stage = data.get("life_stage", "period")
+    cycle_length = data.get("cycle_length")
     track_nutrition = data.get("track_nutrition", False)
 
 
@@ -26,6 +27,14 @@ def setup_profile():
 
         return jsonify({
             "error": "Missing required fields"
+        }),400
+
+
+
+    if life_stage not in ("period", "pregnancy", "menopause"):
+
+        return jsonify({
+            "error": "Invalid life_stage"
         }),400
 
 
@@ -51,6 +60,8 @@ def setup_profile():
         user_id=user_id,
 
         wellness_goal=wellness_goal,
+
+        life_stage=life_stage,
 
         cycle_length=cycle_length,
 
@@ -110,6 +121,8 @@ def get_profile(user_id):
             "id":profile.id,
 
             "wellness_goal":profile.wellness_goal,
+
+            "life_stage":profile.life_stage,
 
             "cycle_length":profile.cycle_length,
 
