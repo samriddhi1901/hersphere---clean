@@ -1,3 +1,13 @@
+from flask import Flask
+from flask_cors import CORS
+
+from config import Config
+from db import db
+
+from routes.chat import chat_bp
+from routes.user import user_bp
+from routes.cycle import cycle_bp
+from routes.mood import mood_bp
 from routes.profile import profile_bp
 from routes.nutrition import nutrition_bp
 from routes.dashboard import dashboard_bp
@@ -8,6 +18,8 @@ from models.cycle import Cycle
 from models.health_profile import HealthProfile
 from models.nutrition import NutritionLog
 from models.water import WaterLog
+
+
 app = Flask(__name__)
 
 app.config.from_object(Config)
@@ -15,7 +27,6 @@ app.config.from_object(Config)
 
 db.init_app(app)
 
-from flask_cors import CORS
 
 CORS(
     app,
