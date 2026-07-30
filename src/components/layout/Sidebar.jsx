@@ -6,50 +6,51 @@ import {
   Apple,
   BarChart3,
   User,
+  Baby,
+  Moon,
+  HeartPulse,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
+import useLifeStage from "../../hooks/useLifeStage";
 
-const menu = [
-  {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    name: "AI Assistant",
-    path: "/chat",
-    icon: Bot,
-  },
-  {
-    name: "Cycle Tracker",
-    path: "/cycle",
-    icon: Calendar,
-  },
-  {
-    name: "Mood Tracker",
-    path: "/mood",
-    icon: Smile,
-  },
-  {
-    name: "Nutrition",
-    path: "/nutrition",
-    icon: Apple,
-  },
-  {
-    name: "Reports",
-    path: "/reports",
-    icon: BarChart3,
-  },
-  {
-    name: "Profile",
-    path: "/profile",
-    icon: User,
-  },
+// Always shown, regardless of life stage
+const commonTop = [
+  { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { name: "AI Assistant", path: "/chat", icon: Bot },
+];
+
+// Shown depending on the user's selected life stage
+const stageMenus = {
+  period: [
+    { name: "Cycle Tracker", path: "/cycle", icon: Calendar },
+    { name: "Mood Tracker", path: "/mood", icon: Smile },
+  ],
+  pregnancy: [
+    { name: "Pregnancy Tracker", path: "/pregnancy", icon: Baby },
+    { name: "Mood Tracker", path: "/mood", icon: Smile },
+  ],
+  menopause: [
+    { name: "Menopause Tracker", path: "/menopause", icon: Moon },
+    { name: "Mood Tracker", path: "/mood", icon: Smile },
+  ],
+};
+
+// Always shown, regardless of life stage
+const commonBottom = [
+  { name: "Nutrition", path: "/nutrition", icon: Apple },
+  { name: "Conditions Hub", path: "/conditions", icon: HeartPulse },
+  { name: "Reports", path: "/reports", icon: BarChart3 },
+  { name: "Profile", path: "/profile", icon: User },
 ];
 
 export default function Sidebar() {
+  const { lifeStage } = useLifeStage();
+
+  const stageItems = stageMenus[lifeStage] || stageMenus.period;
+  const menu = [...commonTop, ...stageItems, ...commonBottom];
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-72 bg-white border-r shadow-lg flex flex-col z-50">
 

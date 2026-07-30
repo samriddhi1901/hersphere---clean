@@ -8,6 +8,9 @@ import CycleTracker from "./pages/CycleTracker";
 import MoodTracker from "./pages/MoodTracker";
 import Reports from "./pages/Reports";
 import Profile from "./pages/Profile";
+import PregnancyTracker from "./pages/PregnancyTracker";
+import MenopauseTracker from "./pages/MenopauseTracker";
+import ConditionsHub from "./pages/ConditionsHub";
 
 export default function App() {
 
@@ -60,6 +63,18 @@ export default function App() {
           path="/profile-setup"
           element={<ProfileSetup />}
         /> 
+        <Route
+          path="/pregnancy"
+          element={<PregnancyTracker />}
+        />
+        <Route
+          path="/menopause"
+          element={<MenopauseTracker />}
+        />
+        <Route
+          path="/conditions"
+          element={<ConditionsHub />}
+        />
       </Routes>
 
     </BrowserRouter>

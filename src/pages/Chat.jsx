@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
 
 import ChatHeader from "../components/chat/ChatHeader";
@@ -42,6 +42,17 @@ export default function Chat() {
 
     setLoading(false);
   }
+
+  // If arriving from the Conditions Hub "Chat about this" button,
+  // auto-send that question once.
+  useEffect(() => {
+    const prefill = localStorage.getItem("chat_prefill");
+    if (prefill) {
+      localStorage.removeItem("chat_prefill");
+      handleSend(prefill);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AuthenticatedLayout>

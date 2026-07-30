@@ -11,6 +11,8 @@ from routes.mood import mood_bp
 from routes.profile import profile_bp
 from routes.nutrition import nutrition_bp
 from routes.dashboard import dashboard_bp
+from routes.pregnancy import pregnancy_bp
+from routes.menopause import menopause_bp
 
 from models.user import User
 from models.mood import Mood
@@ -18,7 +20,8 @@ from models.cycle import Cycle
 from models.health_profile import HealthProfile
 from models.nutrition import NutritionLog
 from models.water import WaterLog
-
+from models.pregnancy import PregnancyProfile, PregnancySymptomLog
+from models.menopause import MenopauseLog
 
 app = Flask(__name__)
 
@@ -48,7 +51,8 @@ app.register_blueprint(mood_bp, url_prefix="/api")
 app.register_blueprint(profile_bp, url_prefix="/api")
 app.register_blueprint(nutrition_bp, url_prefix="/api")
 app.register_blueprint(dashboard_bp, url_prefix="/api")
-
+app.register_blueprint(pregnancy_bp, url_prefix="/api")
+app.register_blueprint(menopause_bp, url_prefix="/api")
 
 @app.route("/")
 def home():
