@@ -118,3 +118,48 @@ def get_summary(user_id):
         "meals_logged_today": meals_today,
         "wellness_score": wellness_score,
     })
+
+
+# Real recent-activity feed, combining mood, nutrition, and water logs
+@dashboard_bp.route("/dashboard/recent-activity/<int:user_id>", methods=["GET"])
+def get_recent_activity(user_id):
+
+    activities = []
+
+    recent_moods = Mood.query.filter_by(user_id=user_id).order_by(
+        Mood.created_at.desc()
+    ).limit(3).all()
+
+    for m in recent_moods:
+        activities.append({
+            "type": "mood",
+            "title": f"Mood updated to {m.mood}",
+            "created_at": m.created_at.isoformat(),
+        })
+
+    recent_meals = NutritionLog.query.filter_by(user_id=user_id).order_by(
+        NutritionLog.created_at.desc()
+    ).limit(3).all()
+
+    for meal in recent_meals:
+        activities.append({
+            "type": "nutrition",
+            "title": f"Logged {meal.meal_type}: {meal.food_description}",
+            "created_at": meal.created_at.isoformat(),
+        })
+
+    recent_water = WaterLog.query.filter_by(user_id=user_id).order_by(
+        WaterLog.log_date.desc()
+    ).limit(3).all()
+
+    for w in recent_water:
+        activities.append({
+            "type": "water",
+            "title": f"Logged {w.glasses} glasses of water",
+            "created_at": datetime.combine(w.log_date, datetime.min.time()).isoformat(),
+        })
+
+    # Sort everything together, most recent first
+    activities.sort(key=lambda a: a["created_at"], reverse=True)
+
+    return jsonify({"activities": activities[:6]})

@@ -1,6 +1,15 @@
 import { CalendarClock } from "lucide-react";
 
-export default function ReminderCard() {
+export default function ReminderCard({ summary, lifeStage = "period" }) {
+  if (lifeStage !== "period") {
+    return null; // only relevant for period tracking
+  }
+
+  const { cycle_day, cycle_length } = summary || {};
+
+  const daysUntilNext =
+    cycle_day && cycle_length ? Math.max(cycle_length - cycle_day, 0) : null;
+
   return (
     <div className="bg-white rounded-3xl shadow-sm p-6 hover:shadow-md transition">
       <div className="flex items-center gap-3">
@@ -9,49 +18,26 @@ export default function ReminderCard() {
         </div>
 
         <div>
-          <h2 className="text-xl font-bold">
-            Upcoming Reminder
-          </h2>
+          <h2 className="text-xl font-bold">Upcoming Reminder</h2>
+          <p className="text-gray-500 text-sm">Stay prepared</p>
+        </div>
+      </div>
 
-          <p className="text-gray-500 text-sm">
-            Stay prepared
+      <div className="mt-5 bg-pink-50 rounded-2xl p-5">
+        <p className="text-pink-600 font-semibold">🌸 Next Period</p>
+
+        {daysUntilNext !== null ? (
+          <>
+            <p className="text-gray-500 mt-1">Expected in</p>
+            <h3 className="text-4xl font-bold text-pink-600 mt-1">
+              {daysUntilNext} Day{daysUntilNext !== 1 ? "s" : ""}
+            </h3>
+          </>
+        ) : (
+          <p className="text-gray-500 mt-2 text-sm">
+            Log a cycle entry in Cycle Tracker to see your prediction here.
           </p>
-        </div>
-      </div>
-
-      <div className="mt-6 bg-pink-50 rounded-2xl p-5">
-
-        <h3 className="font-semibold text-lg">
-          🌸 Next Period
-        </h3>
-
-        <p className="text-gray-600 mt-2">
-          Expected in
-        </p>
-
-        <h1 className="text-5xl font-bold text-pink-600 mt-2">
-          5 Days
-        </h1>
-
-      </div>
-
-      <div className="mt-5 space-y-3">
-
-        <div className="flex justify-between">
-          <span>Hydration</span>
-          <span>💧</span>
-        </div>
-
-        <div className="flex justify-between">
-          <span>Exercise</span>
-          <span>🏃‍♀️</span>
-        </div>
-
-        <div className="flex justify-between">
-          <span>Iron-rich Foods</span>
-          <span>🥗</span>
-        </div>
-
+        )}
       </div>
     </div>
   );

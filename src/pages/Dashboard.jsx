@@ -230,10 +230,15 @@ export default function Dashboard() {
       <div className="grid lg:grid-cols-2 gap-6">
 
 
-        <HealthChecklist />
+        <HealthChecklist summary={summary} />
 
 
-        <WaterTracker />
+        <WaterTracker
+          summary={summary}
+          onWaterUpdate={(newGlasses) =>
+            setSummary((prev) => ({ ...prev, water_glasses: newGlasses }))
+          }
+        />
 
 
       </div>
@@ -244,18 +249,10 @@ export default function Dashboard() {
       <div className="grid lg:grid-cols-2 gap-6">
 
 
-        <ReminderCard />
+        <ReminderCard summary={summary} lifeStage={profile?.life_stage || "period"} />
 
 
         <RecentActivity />
 
 
       </div>
-
-
-
-    </AuthenticatedLayout>
-
-  );
-
-}
