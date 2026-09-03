@@ -9,6 +9,7 @@ import {
   Baby,
   Moon,
   HeartPulse,
+  FlaskConical,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -40,11 +41,11 @@ const stageMenus = {
 // Always shown, regardless of life stage
 const commonBottom = [
   { name: "Nutrition", path: "/nutrition", icon: Apple },
+  { name: "Nutrient Report", path: "/nutrient-report", icon: FlaskConical },
   { name: "Conditions Hub", path: "/conditions", icon: HeartPulse },
   { name: "Reports", path: "/reports", icon: BarChart3 },
   { name: "Profile", path: "/profile", icon: User },
 ];
-
 export default function Sidebar() {
   const { lifeStage } = useLifeStage();
 

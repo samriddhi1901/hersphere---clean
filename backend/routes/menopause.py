@@ -52,3 +52,27 @@ def get_menopause_logs(user_id):
             for log in logs
         ]
     })
+
+
+# AI-personalized insight based on real logged check-ins
+@menopause_bp.route("/menopause/insight/<int:user_id>", methods=["GET"])
+def get_insight(user_id):
+
+    from services.gemini_service import get_menopause_insight
+
+    logs = MenopauseLog.query.filter_by(
+        user_id=user_id
+    ).order_by(MenopauseLog.created_at.desc()).limit(5).all()
+
+    recent_logs = [
+        {
+            "hot_flashes": log.hot_flashes,
+            "mood": log.mood,
+            "sleep_quality": log.sleep_quality,
+        }
+        for log in logs
+    ]
+
+    insight = get_menopause_insight(recent_logs)
+
+    return jsonify({"insight": insight})

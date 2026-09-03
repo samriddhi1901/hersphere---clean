@@ -88,7 +88,11 @@ def get_summary(user_id):
         log_date=today
     ).first()
     water_glasses = water_log.glasses if water_log else 0
-    water_goal = 8
+
+    # Pregnancy needs more fluids (~8-10 glasses vs standard 8)
+    from models.pregnancy import PregnancyProfile
+    is_pregnant = PregnancyProfile.query.filter_by(user_id=user_id).first() is not None
+    water_goal = 9 if is_pregnant else 8
 
     # --- Meals logged today ---
     meals_today = NutritionLog.query.filter(

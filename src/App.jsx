@@ -11,7 +11,7 @@ import Profile from "./pages/Profile";
 import PregnancyTracker from "./pages/PregnancyTracker";
 import MenopauseTracker from "./pages/MenopauseTracker";
 import ConditionsHub from "./pages/ConditionsHub";
-
+import NutrientReport from "./pages/NutrientReport";
 export default function App() {
 
   return (
@@ -74,6 +74,10 @@ export default function App() {
         <Route
           path="/conditions"
           element={<ConditionsHub />}
+        />
+        <Route
+          path="/nutrient-report"
+          element={<NutrientReport />}
         />
       </Routes>
 
