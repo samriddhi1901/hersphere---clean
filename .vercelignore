@@ -1,9 +1,9 @@
-backend/
-venv/
-requirements.txt
-config.py
-debug_models.py
-services/
-utils/
+/backend/
+/venv/
+/requirements.txt
+/config.py
+/debug_models.py
+/services/
+/utils/
 *.pyc
 __pycache__/
